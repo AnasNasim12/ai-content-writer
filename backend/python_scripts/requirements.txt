@@ -1,0 +1,6 @@
+# Add Python dependencies here
+# For Gemini, you will add:
+google-generativeai
+Flask
+python-dotenv
+Flask-CORS

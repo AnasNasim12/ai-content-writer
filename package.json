@@ -1,0 +1,47 @@
+{
+  "name": "ai-content-writer",
+  "version": "1.0.0",
+  "description": "Intelligent Content Creation Platform with 4-Step Wizard - A comprehensive React-based application that leverages AI to create SEO-optimized content through an intuitive wizard process.",
+  "main": "backend/server.js",
+  "scripts": {
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\" \"npm run start:python\"",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm start",
+    "start:python": "cd backend/python_scripts && python llm_service.py",
+    "build": "cd frontend && npm run build",
+    "test": "cd frontend && npm test"
+  },
+  "keywords": [
+    "ai",
+    "content-writing",
+    "seo",
+    "react",
+    "firebase",
+    "material-ui",
+    "llm",
+    "wizard",
+    "content-generation"
+  ],
+  "author": "Anas Nasim",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnasNasim12/ai-content-writer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AnasNasim12/ai-content-writer/issues"
+  },
+  "homepage": "https://github.com/AnasNasim12/ai-content-writer#readme",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "dependencies": {
+    "firebase": "^11.8.1",
+    "react-router-dom": "^7.6.1"
+  }
+}
