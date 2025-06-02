@@ -1,6 +1,8 @@
-# Add Python dependencies here
-# For Gemini, you will add:
-google-generativeai
-Flask
-python-dotenv
-Flask-CORS
+Flask==2.3.3
+Flask-CORS==4.0.0
+python-dotenv==1.0.0
+google-generativeai>=0.7.0,<0.8.0
+langchain-google-genai==1.0.10
+langchain-core
+markdown==3.5.1
+beautifulsoup4==4.12.2
