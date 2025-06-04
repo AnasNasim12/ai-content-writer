@@ -1,6 +1,6 @@
-# 🤖 AI Content Writer
+# AI Content Writer
 
-> **Intelligent Content Creation Platform with 4-Step Wizard**
+**Intelligent Content Creation Platform with 4-Step Wizard**
 
 A comprehensive React-based application that leverages AI to create SEO-optimized content through an intuitive 4-step wizard process. Built with Firebase authentication, Material-UI design system, and integrated LLM services.
 
@@ -10,7 +10,7 @@ A comprehensive React-based application that leverages AI to create SEO-optimize
 [![Material-UI](https://img.shields.io/badge/Material--UI-5.2.8-purple.svg)](https://mui.com/)
 [![Python](https://img.shields.io/badge/Python-Flask-red.svg)](https://flask.palletsprojects.com/)
 
-## 📖 Table of Contents
+## Table of Contents
 
 - [Features](#-features)
 - [Architecture](#-architecture)
@@ -26,41 +26,41 @@ A comprehensive React-based application that leverages AI to create SEO-optimize
 - [Changelog](#-changelog)
 - [License](#-license)
 
-## ✨ Features
+## Features
 
-### 🎯 **Core Functionality**
+### **Core Functionality**
 - **4-Step Content Creation Wizard**
-  - 🔍 Keyword Research & Analysis
-  - 📝 SEO-Optimized Title Generation
-  - 📋 Topic Selection & Outline Creation
-  - ✍️ AI-Powered Content Generation with SEO Scoring
+  -  Keyword Research & Analysis
+  -  SEO-Optimized Title Generation
+  -  Topic Selection & Outline Creation
+  -  AI-Powered Content Generation with SEO Scoring
 
-### 🔐 **Authentication & Security**
+### **Authentication & Security**
 - Firebase Email/Password Authentication
 - Protected Routes & User Session Management
 - Secure API Endpoints
 
-### 🎨 **User Interface**
+### **User Interface**
 - Modern Material-UI Design System
 - Responsive Layout for All Devices
 - Custom Theme with Consistent Branding
 - Intuitive Step-by-Step Wizard Interface
 
-### 📊 **Content Management**
+### **Content Management**
 - Real-time Content Generation
 - SEO Score Display (0-100)
 - Export Content as .txt Files
 - Copy to Clipboard Functionality
 - Dashboard with Generated Articles History
 
-### 🔧 **Technical Features**
+### **Technical Features**
 - React 17 with Hooks & Context API
 - Node.js/Express Backend Server
 - Python Flask LLM Service Integration
 - RESTful API Architecture
 - Error Handling & Loading States
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -76,7 +76,7 @@ A comprehensive React-based application that leverages AI to create SEO-optimize
     └─────────┘             └─────────┘             └─────────┘
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js (v14 or higher)
@@ -90,7 +90,7 @@ git clone https://github.com/AnasNasim12/ai-content-writer.git
 cd ai-content-writer
 ```
 
-## 📦 Installation
+## Installation
 
 ### 1. Backend Setup
 ```powershell
@@ -112,7 +112,7 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### 1. Firebase Configuration
 Create `frontend/.env` file:
@@ -140,7 +140,7 @@ GEMINI_API_KEY=your-gemini-api-key
 OPENAI_API_KEY=your-openai-api-key
 ```
 
-## 🎮 Usage
+## Usage
 
 ### Starting the Application
 
@@ -181,7 +181,7 @@ npm start
 5. **Step 4 - Content Creation:** Generate SEO-optimized article
 6. **Export/Save:** Download as .txt or save to dashboard
 
-## 📚 API Documentation
+## API Documentation
 
 Comprehensive API documentation is available at `/docs` when running the application, or view the [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) file.
 
@@ -195,7 +195,7 @@ POST /api/content-creation
 }
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ai-content-writer/
@@ -232,7 +232,7 @@ ai-content-writer/
             └── 📄 apiClient.js
 ```
 
-## 🛠️ Development
+## Development
 
 ### Available Scripts
 
@@ -266,7 +266,7 @@ python llm_service.py    # Start Flask server
 | LLM Service | Python + Flask | Latest | AI Integration |
 | Markdown | react-markdown | 8.0.7 | Documentation |
 
-## 🧪 Testing
+## Testing
 
 ### Manual Testing Endpoints
 
@@ -278,7 +278,7 @@ Invoke-RestMethod -Uri "http://localhost:3001/api/content-creation" `
   -Body '{"topicInfo": "AI in Healthcare", "keyword": "medical AI"}'
 ```
 
-## 🚀 Deployment
+## Deployment
 
 For detailed deployment instructions to various cloud platforms, see our comprehensive [Deployment Guide](DEPLOYMENT.md).
 
@@ -311,7 +311,7 @@ cp backend/.env.example backend/.env
 cp backend/python_scripts/.env.example backend/python_scripts/.env
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
@@ -327,14 +327,14 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - Check existing [Issues](https://github.com/AnasNasim12/ai-content-writer/issues)
 - Review our [Development Guidelines](CONTRIBUTING.md#coding-standards)
 
-## 🔒 Security
+## Security
 
 Security is a top priority. Please see our [Security Policy](SECURITY.md) for:
 - Reporting vulnerabilities
 - Security best practices
 - Supported versions
 
-## 📋 Changelog
+## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes and updates.
 
@@ -346,18 +346,11 @@ See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes and updates.
 - Update documentation for API changes
 - Ensure cross-browser compatibility
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- [Material-UI](https://mui.com/) for the excellent component library
-- [Firebase](https://firebase.google.com/) for authentication services
-- [React](https://reactjs.org/) for the powerful frontend framework
-- [Flask](https://flask.palletsprojects.com/) for the lightweight Python backend
-
-## 📁 Documentation
+## Documentation
 
 | Document | Description |
 |----------|-------------|
@@ -370,14 +363,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🏆 Project Status
-
-![GitHub last commit](https://img.shields.io/github/last-commit/AnasNasim12/ai-content-writer)
-![GitHub issues](https://img.shields.io/github/issues/AnasNasim12/ai-content-writer)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/AnasNasim12/ai-content-writer)
-![GitHub stars](https://img.shields.io/github/stars/AnasNasim12/ai-content-writer)
-![GitHub forks](https://img.shields.io/github/forks/AnasNasim12/ai-content-writer)
 
 **Made with ❤️ by [Anas Nasim](https://github.com/AnasNasim12)**
-
-*Building the future of AI-powered content creation, one step at a time.*
