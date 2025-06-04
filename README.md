@@ -66,7 +66,7 @@ A comprehensive React-based application that leverages AI to create SEO-optimize
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   React App     │────│  Node.js API    │────│  Python LLM     │
 │   (Frontend)    │    │   (Backend)     │    │   Service       │
-│   Port: 3000    │    │   Port: 3001    │    │   Port: 5000    │
+│   Port: 3000    │    │   Port: 3001    │    │   Port: 5001    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       │
@@ -129,7 +129,7 @@ REACT_APP_FIREBASE_APP_ID=your-app-id
 Create `backend/.env` file:
 ```env
 PORT=3001
-FIREBASE_PROJECT_ID=your-project-id
+GOOGLE_APPLICATION_CREDENTIALS=./config/firebase-service-account-key.json
 ```
 
 ### 3. LLM Service Configuration
@@ -169,7 +169,7 @@ npm start
 
 - **Frontend:** http://localhost:3000
 - **Backend API:** http://localhost:3001
-- **LLM Service:** http://localhost:5000
+- **LLM Service:** http://localhost:5001
 - **API Documentation:** http://localhost:3000/docs
 
 ### Using the Content Creation Wizard

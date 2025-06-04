@@ -103,7 +103,7 @@ Write-Host ""
 Write-Host "🌐 Access Points:" -ForegroundColor Cyan
 Write-Host "• Frontend: http://localhost:3000" -ForegroundColor White
 Write-Host "• Backend API: http://localhost:3001" -ForegroundColor White
-Write-Host "• Python Service: http://localhost:5000" -ForegroundColor White
+Write-Host "• Python Service: http://localhost:5001" -ForegroundColor White
 Write-Host "• Documentation: http://localhost:3000/docs" -ForegroundColor White
 Write-Host ""
 Write-Host "🚀 Happy coding!" -ForegroundColor Green

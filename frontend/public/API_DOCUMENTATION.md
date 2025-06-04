@@ -3,7 +3,7 @@
 ## Table of Contents
 1. [Overview](#overview)
 2. [Backend APIs](#backend-apis)
-3. [LLM Service Integration](#llm-service-integration)
+3. [LLM Service IntegrThe backend communicates with a Python service running on `http://localhost:5001`tion](#llm-service-integration)
 4. [Frontend API Client](#frontend-api-client)
 5. [Authentication Flow](#authentication-flow)
 6. [Data Models](#data-models)
@@ -24,6 +24,70 @@ The AI Content Writer application consists of three main components:
 http://localhost:3001/api
 ```
 
+### Authentication
+All endpoints require Firebase authentication via Bearer token in Authorization header.
+
+### Keyword Research Endpoint
+
+#### POST `/keyword-research`
+Generates related keywords from a seed keyword.
+
+**Request Body:**
+```json
+{
+  "seedKeyword": "string"  // Seed keyword for research
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "keywords": ["string"]   // Array of related keywords
+}
+```
+
+### Title Generation Endpoint
+
+#### POST `/title-generation`
+Generates SEO-optimized titles for a selected keyword.
+
+**Request Body:**
+```json
+{
+  "selectedKeyword": "string"  // Selected keyword from research
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "titles": ["string"]     // Array of SEO-optimized titles
+}
+```
+
+### Generate Outline Endpoint
+
+#### POST `/generate-outline`
+Creates content outline from a selected title.
+
+**Request Body:**
+```json
+{
+  "title": "string",       // Selected title
+  "keyword": "string"      // Selected keyword (optional)
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "outline": "string"      // Generated content outline
+}
+```
+
 ### Content Creation Endpoint
 
 #### POST `/content-creation`
@@ -40,8 +104,9 @@ Generates AI content using the LLM service.
 **Response:**
 ```json
 {
+  "success": true,
   "content": "string",    // Generated content
-  "seoScore": "number"    // SEO score (0-100)
+  "seo_score": "number"   // SEO score (0-100)
 }
 ```
 
@@ -62,8 +127,64 @@ fetch('/api/content-creation', {
 **Example Response:**
 ```json
 {
+  "success": true,
   "content": "Machine learning is a subset of artificial intelligence...",
-  "seoScore": 85
+  "seo_score": 85
+}
+```
+
+### Advanced SEO Scoring Endpoint
+
+#### POST `/score-seo`
+Scores existing text content for SEO effectiveness using the LLM.
+
+**Request Body:**
+```json
+{
+  "text": "string",     // The text content to be scored
+  "keyword": "string"   // The primary keyword to score against
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "seo_score": "number", // Advanced SEO score (0-100)
+  "warning": "string"   // Optional warning if fallback scoring was used
+}
+```
+
+**Example Request:**
+```javascript
+fetch('/api/score-seo', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    // Authorization: 'Bearer <FIREBASE_ID_TOKEN>'
+  },
+  body: JSON.stringify({
+    text: "This is an example article about the benefits of solar power...",
+    keyword: "solar power"
+  })
+})
+```
+
+**Example Response (Success):**
+```json
+{
+  "success": true,
+  "seo_score": 92,
+  "warning": null
+}
+```
+
+**Example Response (Success with Warning):**
+```json
+{
+  "success": true,
+  "seo_score": 75,
+  "warning": "Advanced SEO scoring returned out-of-range score, used basic scoring."
 }
 ```
 
@@ -78,16 +199,67 @@ All endpoints return errors in the following format:
 
 ## LLM Service Integration
 
-### Python Service Endpoint
-The backend communicates with a Python service running on `http://localhost:5000`
+### Python Service Endpoints
+The backend communicates with a Python service running on `http://localhost:5001`
 
-#### POST `/generate-content`
-Internal endpoint called by the Node.js backend.
+#### POST `/related_keywords`
+Generates related keywords from a seed keyword.
 
 **Request:**
 ```json
 {
-  "topic_info": "string",
+  "seed_keyword": "string"
+}
+```
+
+**Response:**
+```json
+{
+  "related_keywords": ["string"]
+}
+```
+
+#### POST `/seo_titles`
+Generates SEO-optimized titles for a keyword.
+
+**Request:**
+```json
+{
+  "keyword": "string"
+}
+```
+
+**Response:**
+```json
+{
+  "titles": ["string"]
+}
+```
+
+#### POST `/topic_ideas`
+Generates content outline from a title.
+
+**Request:**
+```json
+{
+  "title": "string"
+}
+```
+
+**Response:**
+```json
+{
+  "topic_ideas": "string"
+}
+```
+
+#### POST `/generate_content`
+Generates AI content from topic and keyword.
+
+**Request:**
+```json
+{
+  "topic": "string",
   "keyword": "string"
 }
 ```
@@ -96,6 +268,24 @@ Internal endpoint called by the Node.js backend.
 ```json
 {
   "content": "string",
+  "seo_score": "number"
+}
+```
+
+#### POST `/score_seo`
+Scores content for SEO effectiveness.
+
+**Request:**
+```json
+{
+  "text": "string",
+  "keyword": "string"
+}
+```
+
+**Response:**
+```json
+{
   "seo_score": "number"
 }
 ```
@@ -110,9 +300,14 @@ The Python service (`backend/python_scripts/llm_service.py`) handles:
 
 **Dependencies:**
 ```
-flask==2.3.3
-requests==2.31.0
-openai==0.28.1
+Flask==2.3.3
+Flask-CORS==4.0.0
+python-dotenv==1.0.0
+google-generativeai>=0.7.0,<0.8.0
+langchain-google-genai==1.0.10
+langchain-core
+markdown==3.5.1
+beautifulsoup4==4.12.2
 ```
 
 ## Frontend API Client
@@ -257,6 +452,7 @@ Create `.env` file in backend directory:
 ```env
 PORT=3001
 FIREBASE_PROJECT_ID=your-project-id
+GOOGLE_APPLICATION_CREDENTIALS=./config/firebase-service-account-key.json
 ```
 
 ### Frontend Environment Variables
@@ -282,6 +478,8 @@ npm start
 2. **Start Python LLM Service:**
 ```powershell
 cd backend/python_scripts
+python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt
 python llm_service.py
 ```
@@ -307,7 +505,7 @@ Invoke-RestMethod -Uri "http://localhost:3001/api/content-creation" `
 ### Test Python Service Directly
 ```powershell
 # Using PowerShell  
-Invoke-RestMethod -Uri "http://localhost:5000/generate-content" `
+Invoke-RestMethod -Uri "http://localhost:5001/generate-content" `
   -Method POST `
   -ContentType "application/json" `
   -Body '{"topic_info": "Climate change solutions", "keyword": "carbon footprint reduction"}'
@@ -428,5 +626,5 @@ const handleGenerate = async () => {
 
 ---
 
-*Last Updated: June 2, 2025*
-*Version: 1.0.0*
+*Last Updated: June 4, 2025*
+*Version: 1.1.0*

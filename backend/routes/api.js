@@ -169,4 +169,44 @@ router.post('/content-creation', verifyToken, async (req, res) => { // Added ver
   }
 });
 
+// New Route for Advanced SEO Scoring
+router.post('/score-seo', verifyToken, async (req, res) => {
+  const { text, keyword } = req.body;
+  console.log('Advanced SEO Scoring requested for user:', req.user.uid, 'for keyword:', keyword);
+
+  if (!text || !keyword) {
+    return res.status(400).json({ success: false, error: 'Text content and keyword are required for SEO scoring.' });
+  }
+
+  try {
+    const pythonServiceUrl = 'http://localhost:5001/score_seo'; // Python Flask service endpoint
+    const response = await axios.post(pythonServiceUrl, {
+      text: text, // Pass text to Python service
+      keyword: keyword    // Pass keyword to Python service
+    });
+
+    // Python service returns { "seo_score": ... } or { "seo_score": ..., "warning": "..." }
+    if (response.data && typeof response.data.seo_score !== 'undefined') {
+      res.json({ 
+        success: true, 
+        seo_score: response.data.seo_score,
+        warning: response.data.warning // Include warning if present
+      });
+    } else {
+      console.error('Unexpected response from Python SEO scoring service:', response.data);
+      res.status(500).json({ success: false, error: 'Failed to get SEO score from AI service.' });
+    }
+  } catch (error) {
+    console.error('Error calling Python SEO scoring service:', error.message);
+    if (error.response) {
+      console.error('Python service response error:', error.response.data);
+      res.status(error.response.status || 500).json({ success: false, error: error.response.data.error || 'Error from AI service.' });
+    } else if (error.request) {
+      res.status(503).json({ success: false, error: 'AI service (for SEO scoring) is unavailable or not responding.' });
+    } else {
+      res.status(500).json({ success: false, error: 'Internal server error while contacting AI service for SEO scoring.' });
+    }
+  }
+});
+
 module.exports = router;

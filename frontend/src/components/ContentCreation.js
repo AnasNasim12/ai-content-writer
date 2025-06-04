@@ -7,6 +7,8 @@ export default function ContentCreation({ wizardData, updateWizardData, handleNe
   const [error, setError] = useState('');
   const [seoScore, setSeoScore] = useState(wizardData.seoScore || null); // Initialize from wizardData
   const [currentContent, setCurrentContent] = useState(wizardData.generatedContent || '');
+  const [advancedSeoScore, setAdvancedSeoScore] = useState(wizardData.advancedSeoScore || null);
+  const [isScoring, setIsScoring] = useState(false);
 
   useEffect(() => {
     // Update local state if wizardData changes from outside (e.g., navigating back and forth)
@@ -15,6 +17,9 @@ export default function ContentCreation({ wizardData, updateWizardData, handleNe
     }
     if (wizardData.seoScore) {
       setSeoScore(wizardData.seoScore);
+    }
+    if (wizardData.advancedSeoScore) {
+      setAdvancedSeoScore(wizardData.advancedSeoScore);
     }
 
     // Auto-generate content when step is reached, outline and keyword are available, and content hasn't been generated for current inputs
@@ -58,6 +63,7 @@ export default function ContentCreation({ wizardData, updateWizardData, handleNe
         updateWizardData({
           generatedContent: response.content, // Use response.content
           seoScore: response.seo_score !== undefined ? response.seo_score : null, // Use response.seo_score
+          advancedSeoScore: null, // Reset advanced score when new content is generated
           currentOutlineForContent: wizardData.outlineContent, // Track what outline was used
           currentKeywordForContent: wizardData.selectedKeyword // Track what keyword was used
         });
@@ -76,6 +82,35 @@ export default function ContentCreation({ wizardData, updateWizardData, handleNe
       // updateWizardData({ generatedContent: '', seoScore: null });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAdvancedSeoScore = async () => {
+    if (!currentContent || !wizardData.selectedKeyword) {
+      setError('Content and keyword are required to get an advanced SEO score.');
+      return;
+    }
+    setIsScoring(true);
+    setError('');
+    try {
+      const response = await callAuthenticatedApi('/api/score-seo', 'POST', {
+        text: currentContent,
+        keyword: wizardData.selectedKeyword,
+      });
+      if (response && typeof response.seo_score !== 'undefined') {
+        setAdvancedSeoScore(response.seo_score);
+        updateWizardData({ advancedSeoScore: response.seo_score });
+        if(response.warning) {
+          setError(`Advanced SEO Score Warning: ${response.warning}`); // Display warning as a non-blocking error
+        }
+      } else {
+        setError(response.error || 'Failed to get advanced SEO score.');
+      }
+    } catch (err) {
+      console.error("Error getting advanced SEO score:", err);
+      setError(err.error || err.message || 'An error occurred while fetching the advanced SEO score.');
+    } finally {
+      setIsScoring(false);
     }
   };
 
@@ -125,11 +160,26 @@ export default function ContentCreation({ wizardData, updateWizardData, handleNe
       {currentContent && (
         <Paper elevation={1} sx={{ padding: 2, mt: 2, maxHeight: '400px', overflowY: 'auto' }}>
           {/* <Typography variant="h5" gutterBottom>{wizardData.selectedTitle}</Typography> */}
+          <Box sx={{ mb: 2 }}>
           {seoScore !== null && (
-            <Typography variant="subtitle1" gutterBottom>
-              Basic SEO Score (Keyword Presence): {seoScore}
+            <Typography variant="subtitle1" sx={{ mt: 1 }}>
+              Basic SEO Score (Keyword Presence): {seoScore > 0 ? 'Keyword Present' : 'Keyword Not Found'}
             </Typography>
           )}
+          {advancedSeoScore !== null && (
+            <Typography variant="subtitle1" sx={{ mt: 1, color: 'primary.main' }}>
+              Advanced SEO Score: {advancedSeoScore}/100
+            </Typography>
+          )}
+        </Box>
+        <Button 
+          variant="outlined" 
+          onClick={handleAdvancedSeoScore} 
+          disabled={loading || isScoring || !currentContent || !wizardData.selectedKeyword}
+          sx={{mt: 2}}
+        >
+          {isScoring ? <CircularProgress size={24} /> : 'Get Advanced SEO Score'}
+        </Button>
           <TextareaAutosize
             minRows={10}
             style={{ width: '100%', padding: '10px', fontFamily: 'monospace', border: '1px solid #ccc', whiteSpace: 'pre-wrap' }}
